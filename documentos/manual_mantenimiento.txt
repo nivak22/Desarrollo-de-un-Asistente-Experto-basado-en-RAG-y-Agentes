@@ -1,0 +1,16 @@
+Manual de Usuario y Mantenimiento Técnico - EvoBike Rayo Pro
+
+1. MANTENIMIENTO DE FRENOS Y AJUSTE DE GUAYAS
+Si nota que los frenos están muy largos y no detienen la moto a tiempo, es necesario ajustar la tensión de la guaya del freno. Para solucionar esto, debe ubicar la tuerca de ajuste situada en el tambor de freno correspondiente (ya sea en la rueda delantera o trasera). Gire la tuerca en sentido horario para tensar el cable gradualmente. Verifique que la manigueta tenga un recorrido libre de 1 a 2 centímetros antes de accionar el freno por completo para evitar que la moto quede frenada.
+
+2. REVISIÓN DEL SISTEMA ELÉCTRICO Y CABLEADO
+Si la moto no acelera al girar el manillar, el primer paso es revisar el cableado principal y los sensores de corte. Verifique que los cables que conectan el acelerador con el controlador no estén pellizcados, sueltos o sulfatados. Además, revise los sensores de freno en las maniguetas; si un sensor se queda pegado, enviará una señal de corte de energía al motor, impidiendo la aceleración. Limpie los contactos con limpia contactos dieléctrico si es necesario.
+
+3. REEMPLAZO Y ACTUALIZACIÓN DE BATERÍAS (PLOMO-ÁCIDO A LITIO)
+La EvoBike Rayo Pro viene de fábrica con baterías de plomo-ácido, pero sí es posible cambiar la batería de plomo-ácido por una de litio para mejorar el rendimiento y reducir el peso. Para realizar el cambio, el primer paso obligatorio es desconectar el interruptor de seguridad (breaker) ubicado bajo el asiento. Luego, retire el pack de baterías de plomo-ácido actual. Instale la nueva batería de litio asegurando que los voltajes coincidan exactamente (normalmente 72V). Es fundamental recordar que requiere reemplazar también el cargador; debe utilizar exclusivamente el cargador especial para litio incluido con su nueva batería, ya que usar el cargador antiguo de plomo-ácido causará daños irreversibles o riesgo de incendio.
+
+4. CUIDADO Y MANTENIMIENTO DE LA BATERÍA
+Para maximizar la vida útil del sistema de almacenamiento de energía, nunca deje descargar la batería por debajo del 20% de su capacidad total. Si la motocicleta eléctrica no se va a utilizar por un periodo prolongado (más de un mes), se recomienda cargar la batería hasta el 80%, apagar el breaker de seguridad principal y almacenarla en un lugar fresco y seco, alejado de la luz solar directa y de la humedad.
+
+5. PRESIÓN DE NEUMÁTICOS Y REVISIÓN DE RODAMIENTOS
+La presión adecuada de los neumáticos es vital para la autonomía del motor eléctrico. Mantenga la presión de la llanta delantera en 30 PSI y la trasera en 32 PSI. Revise visualmente el desgaste de la banda de rodadura cada mes. Si nota vibraciones inusuales en la rueda trasera donde se aloja el motor hub, es posible que los rodamientos requieran lubricación o reemplazo, lo cual debe ser realizado por un centro de servicio autorizado.
