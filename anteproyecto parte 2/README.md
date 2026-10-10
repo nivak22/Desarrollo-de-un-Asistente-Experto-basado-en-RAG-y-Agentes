@@ -30,7 +30,7 @@ La versión que entrego implementa una cadena RAG sencilla; **no implementa agen
 ```text
 .
 ├── app.py                 # Interfaz web de Streamlit
-├── requirements.txt       # Dependencias de Python
+├── ../requirements.txt    # Dependencias de Python (raíz del repositorio)
 ├── data/                  # Manuales PDF, TXT o Markdown de entrada
 ├── chroma_db/             # Índice vectorial local generado (no se versiona)
 └── src/
@@ -52,10 +52,10 @@ Recomiendo crear un entorno virtual e instalar allí las dependencias:
 ```powershell
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m pip install -r ..\requirements.txt
 ```
 
-Si ya tiene un entorno virtual activado, puede usar `python -m pip install -r requirements.txt` en lugar de las dos últimas rutas.
+Si ya tiene un entorno virtual activado, puede usar `python -m pip install -r ..\requirements.txt` en lugar de las dos últimas rutas.
 
 ### Configuración de su clave de Google
 
@@ -108,7 +108,7 @@ La aplicación se puede desplegar en Streamlit Community Cloud conectándola a u
 
 Antes de desplegar:
 
-1. Suba a GitHub el código de esta carpeta, incluidos `app.py`, `src/`, `requirements.txt` y los documentos autorizados de `data/`. Streamlit Cloud solo puede desplegar archivos que estén en el repositorio.
+1. Suba a GitHub el código de esta carpeta, incluidos `app.py`, `src/` y los documentos autorizados de `data/`, además de `requirements.txt` en la raíz del repositorio. Streamlit Cloud solo puede desplegar archivos que estén en el repositorio.
 2. No suba `.env`, `.venv/` ni `chroma_db/`. Están excluidos por `.gitignore`; el índice se generará en el servidor a partir de los documentos incluidos en `data/`.
 3. Compruebe que los manuales se pueden compartir en el repositorio y que no incluyen información confidencial.
 4. Si no desea publicar el código o los manuales, no use un repositorio público: elija un repositorio privado y confirme que su cuenta de Streamlit Community Cloud puede desplegarlo.
