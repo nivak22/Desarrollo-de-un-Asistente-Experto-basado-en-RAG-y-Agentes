@@ -2,6 +2,11 @@
 
 Profesor, en este proyecto desarrollé un asistente web que permite consultar manuales técnicos en lenguaje natural. Para responder, recupera fragmentos relevantes de los documentos cargados y los envía a Google Gemini como contexto. La aplicación también muestra las fuentes documentales utilizadas.
 
+## Enlaces del proyecto
+
+- [RAG Técnico Asistente · Streamlit](https://desarrollo-de-un-asistente-experto-basado-en-rag-y-agentes-zq4.streamlit.app/)
+- [Repositorio de GitHub](https://github.com/nivak22/Desarrollo-de-un-Asistente-Experto-basado-en-RAG-y-Agentes)
+
 ## Nota importante para ejecutar el proyecto
 
 Por seguridad, no incluí mi clave de Google en los archivos del proyecto. Si ejecuta la aplicación localmente, deberá crear su propio `.env`; si la abre desde la URL desplegada, deberá ingresar su propia clave en el campo protegido de la página. Sin una clave válida para Gemini, no se podrán enviar preguntas al modelo.
