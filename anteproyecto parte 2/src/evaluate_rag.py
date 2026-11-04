@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import sys
 from pathlib import Path
 
@@ -21,73 +22,38 @@ from src.rag_core import get_rag_chain
 
 load_dotenv(PROJECT_ROOT / ".env")
 
-EVAL_DATA = [
-    {
-        "question": "¿Cuál es el voltaje nominal de la batería EvoBike Rayo Pro?",
-        "ground_truth": "El voltaje nominal es de 72V según el manual de especificaciones.",
-    },
-    {
-        "question": "¿Cómo se configura el BMS Daly para limitar la corriente?",
-        "ground_truth": "Se debe acceder a la aplicación del BMS Daly, abrir parámetros de protección y ajustar la corriente máxima de descarga según el valor recomendado." ,
-    },
-    {
-        "question": "¿Qué debe hacer si los frenos están muy largos?",
-        "ground_truth": "Debe ajustar la tensión de la guaya del freno girando la tuerca de ajuste en sentido horario y verificar que la manigueta tenga 1 a 2 centímetros de recorrido libre.",
-    },
-    {
-        "question": "¿Qué presión debe tener la llanta delantera y trasera?",
-        "ground_truth": "La presión recomendada es 30 PSI en la llanta delantera y 32 PSI en la trasera.",
-    },
-    {
-        "question": "¿Qué ocurre si la batería se descarga por debajo del 20%?",
-        "ground_truth": "No se debe dejar descargar por debajo del 20% de su capacidad total porque se recomienda mantener un nivel de carga adecuado para prolongar la vida útil del sistema de almacenamiento.",
-    },
-    {
-        "question": "¿Cuándo se recomienda guardar la batería por un periodo prolongado?",
-        "ground_truth": "Si la motocicleta no se va a usar por más de un mes, se recomienda cargar la batería hasta el 80%, apagar el breaker principal y almacenarla en un lugar fresco y seco.",
-    },
-    {
-        "question": "¿Qué debe revisar si la moto no acelera al girar el manillar?",
-        "ground_truth": "Debe revisar el cableado principal, los sensores de corte y los sensores de freno para comprobar que no estén pellizcados, sueltos o pegados.",
-    },
-    {
-        "question": "¿Puede cambiarse la batería de plomo-ácido por una de litio?",
-        "ground_truth": "Sí, es posible cambiar la batería de plomo-ácido por una de litio, pero se debe desconectar el breaker, instalar la nueva batería con voltajes coincidentes y usar el cargador especial para litio.",
-    },
-    {
-        "question": "¿Cuál es la velocidad máxima recomendada de la EvoBike Rayo Pro?",
-        "ground_truth": "La velocidad máxima recomendada es de 45 km/h.",
-    },
-    {
-        "question": "¿Qué debe hacer si la moto presenta vibraciones inusuales en la rueda trasera?",
-        "ground_truth": "Podría indicar que los rodamientos necesitan lubricación o reemplazo, lo cual debe ser realizado por un centro de servicio autorizado.",
-    },
-    {
-        "question": "¿Qué se debe revisar antes de cada recorrido?",
-        "ground_truth": "Antes de cada recorrido se debe verificar el estado de la cadena, los frenos, los neumáticos y la carga del paquete de baterías.",
-    },
-    {
-        "question": "¿Qué medida de seguridad se recomienda al almacenar la bicicleta?",
-        "ground_truth": "Se recomienda mantener la batería con al menos el 50% de carga y desconectar el interruptor principal cuando se guarda la motocicleta.",
-    },
-    {
-        "question": "¿Qué tan importante es la revisión periódica?",
-        "ground_truth": "La revisión periódica y el mantenimiento preventivo son esenciales para prolongar la vida útil de la motocicleta y reducir fallas eléctricas.",
-    },
-    {
-        "question": "¿Cuál es la capital de Francia?",
-        "ground_truth": "La información no se encuentra en la base de conocimientos proporcionada.",
-    },
-    {
-        "question": "¿Qué se debe hacer si el sistema activa protección por sobretemperatura?",
-        "ground_truth": "Se debe permitir que el sistema se enfríe durante 10 a 15 minutos antes de continuar.",
-    },
-]
+
+def load_eval_data(path: Path | None = None) -> list[dict[str, str]]:
+    dataset_path = path or PROJECT_ROOT / "eval_dataset.csv"
+    if not dataset_path.exists():
+        raise FileNotFoundError(f"No existe el conjunto de evaluación: {dataset_path}")
+
+    rows = []
+    with dataset_path.open("r", encoding="utf-8", newline="") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            rows.append({
+                "question": row["question"].strip(),
+                "ground_truth": row["ground_truth"].strip(),
+            })
+    return rows
+
+
+EVAL_DATA = load_eval_data()
+
+
+def _save_eval_csv(rows: list[dict], path: Path):
+    fieldnames = ["question", "ground_truth", "answer", "context"]
+    with path.open("w", encoding="utf-8", newline="") as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
 
 
 def run_evaluation():
     rag_chain = get_rag_chain()
 
+    rows = []
     questions = []
     answers = []
     contexts = []
@@ -100,6 +66,16 @@ def run_evaluation():
         answers.append(response["answer"])
         contexts.append([doc.page_content for doc in response["context"]])
         ground_truths.append(item["ground_truth"])
+        rows.append(
+            {
+                "question": item["question"],
+                "ground_truth": item["ground_truth"],
+                "answer": response["answer"],
+                "context": "\n---\n".join(doc.page_content for doc in response["context"]),
+            }
+        )
+
+    _save_eval_csv(rows, PROJECT_ROOT / "evaluacion_ragas.csv")
 
     dataset = Dataset.from_dict(
         {
@@ -125,6 +101,8 @@ def run_evaluation():
     df.to_csv(PROJECT_ROOT / "resultados_ragas.csv", index=False)
     print("Evaluación completada. Resultados guardados en resultados_ragas.csv")
     print(result)
+
+    return df
 
 
 if __name__ == "__main__":

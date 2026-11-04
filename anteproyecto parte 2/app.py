@@ -13,14 +13,14 @@ load_dotenv(ROOT_DIR / ".env")
 st.set_page_config(page_title="RAG Técnico Asistente", page_icon="🤖", layout="centered")
 st.title("🤖 Asistente Experto (RAG)")
 st.markdown(
-    "Consulta manuales técnicos. Las respuestas están ancladas estrictamente a los documentos base."
+    "Consulta manuales técnicos con respaldo documental. La respuesta se fundamenta solo en el corpus indexado."
 )
 
 api_key = st.text_input(
     "Clave de Google Gemini",
     value=os.getenv("GOOGLE_API_KEY", ""),
     type="password",
-    help="La clave se usa durante esta sesión para consultar Gemini. No la compartas ni la incluyas en capturas.",
+    help="Se usa solo durante esta sesión para consultar Gemini.",
 )
 if not api_key:
     st.info("Ingresa tu propia clave de Google Gemini para comenzar.")
@@ -76,13 +76,14 @@ if user_input:
             source_docs = response.get("context", [])
             st.write(answer)
 
-            if source_docs and "La información no se encuentra" not in answer:
+            if source_docs:
                 with st.expander("Ver fuentes documentales"):
                     for idx, doc in enumerate(source_docs, start=1):
                         source = doc.metadata.get("source", "Desconocido")
+                        source_type = doc.metadata.get("file_type", "desconocido")
                         page = doc.metadata.get("page", "N/A")
-                        st.markdown(f"**Fuente {idx}:** `{source}` (Página {page})")
-                        st.caption(f'"{doc.page_content[:200]}..."')
+                        st.markdown(f"**Fuente {idx}:** `{source}` · tipo: `{source_type}` · página: `{page}`")
+                        st.caption(f'"{doc.page_content[:250]}..."')
 
     st.session_state.chat_history.append(HumanMessage(content=user_input))
     st.session_state.chat_history.append(AIMessage(content=answer))
